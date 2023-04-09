@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,14 +25,44 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    
+/*
+|--------------------------------------------------------------------------
+| ROTAS COM AUTENTICAÇÃO
+|--------------------------------------------------------------------------
+| Aqui estarão as rotas que exigem autenticação.
+| Se tentar acessá-las sem estar logado, será redirecionado à página de login.
+*/    
+    
+    /**
+     * Página inicial após logar na aplicação.
+     */
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    /**
+     * Rotas de Contatos.
+     */
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
+    Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
+    Route::get('/contacts/{contact}/show', [ContactController::class, 'show'])->name('contacts.show');
+    Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
+    Route::post('/contacts/update', [ContactController::class, 'update'])->name('contacts.update');
+    /* Route::post('/contacts/{contact}/update', [ContactController::class, 'update'])->name('contacts.update'); */
+    /* Route::get('/contacts/{contact}delete', [ContactController::class, 'destroy'])->name('contacts.destroy'); */
+
+    Route::get('/contacts/{contact}/delete', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
 });
 
-require __DIR__.'/auth.php';
+
+
+
