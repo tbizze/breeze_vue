@@ -1,10 +1,11 @@
 <script setup>
-import { Head,Link } from '@inertiajs/vue3';
-import AppLayout from '@/Layouts/AppLayout.vue';
+    import { Head,Link } from '@inertiajs/vue3';
+    import AppLayout from '@/Layouts/AppLayout.vue';
 
-defineProps({
-    contacts: Array,
-})
+    defineProps({
+        contacts: Array,
+    })
+
 
 
 </script>
@@ -24,6 +25,12 @@ defineProps({
         <!-- Corpo da Página -->
         <div class="py-12">
             <div class="max-w-5xl mx-auto py-1 sm:px-6 lg:px-8">
+                
+                <div class="mb-4 max-w-xs">
+                    <!-- <input type="search" v-model="params.search" aria-label="Search" placeholder="Search..." class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/> -->
+                    <!-- <input type="search"  aria-label="Search" placeholder="Search..." class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/> -->
+                </div>
+                
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg ">
                     <div class="font-sans text-gray-900 antialiased ">
                         <div class="pt-4 bg-gray-100>">

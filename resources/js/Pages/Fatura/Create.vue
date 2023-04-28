@@ -1,0 +1,314 @@
+<script setup>
+/** FONTE ==> Código base para adicionar as linhas
+ *  :::: https://github.com/viclotana/vue_dynamic/blob/master/src/components/Test.vue
+ *  :::: https://blog.logrocket.com/make-form-elements-dynamic-vue-js/
+ * */ 
+
+import { Head, Link, router, useForm } from "@inertiajs/vue3";
+import { ref, watch } from "vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
+
+import FormInput from "@/Components/FormInput.vue";
+import Listbox from "@/Components/ListBox.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import InputError from "@/Components/InputError.vue";
+import FormButtonNew from "@/Components/FormButtonNew.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import SectionPageForm from "@/Components/SectionPageForm.vue";
+import { PlusIcon,TrashIcon } from "@heroicons/vue/solid";
+
+const props = defineProps({
+  operadoras: Object,
+  grupos: Object,
+  titulo: "",
+});
+
+const form = useForm({
+  dt_venc: "2023-01-25",
+  dt_pgto: "2023-03-30",
+  valor_pgto: "14.56",
+  notas: "Cabeçalho de pedido, em teste.",
+  fat_operadora_id: 2,
+  fat_itens: [
+    {
+      dt_compra: "2023-01-25",
+      historico: "Compra de teste.",
+      parcelas: "01/2",
+      valor_compra: "50.56",
+      notas: "Testanto form.",
+      fat_grupo_id: 1,
+    },
+  ],
+  total_itens:0,
+});
+
+/**
+ * Função para submeter o formulário.
+ * Persiste no BD.
+ */
+function submit() {
+  form.post(route("fat.store"));
+  //console.log(form);
+}
+
+/**
+ * Função para cancelar o cadastro.
+ * Volta para a listagem.
+ */
+function cancelSave() {
+  router.get(route("fat"));
+}
+
+/**
+ * Função para adicionar nova linha para itens, em branco.
+ */
+function addItem() {
+  form.fat_itens.push({
+    dt_compra: "",
+    historico: "",
+    parcelas: "",
+    valor_compra: "",
+    notas: "",
+    fat_grupo_id: "",
+  });
+}
+
+/**
+ * Função para excluir a linha de itens.
+ * Recebe como parâmetro o índice Array da linha.
+ */
+function deleteItem(index) {
+  form.fat_itens.splice(index, 1);
+}
+</script>
+
+<template>
+  <!-- Carrega o Layout da Aplicação com "Logo e TopMenu, com botões Login/Logout..." -->
+  <AppLayout :title="props.titulo">
+    <!-- #### SEÇÃO: Título da Página -->
+    <template #header>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ titulo }}
+      </h2>
+    </template>
+    <SectionPageForm>
+      <template #corpo>
+        <div class="m-5">
+          <!-- #### START #### -->
+          <!-- Conteúdo da Página -->
+
+          <form @submit.prevent="submit()">
+            <!-- Formulário -->
+            <div class="">
+              <!-- Campo Data Venc. -->
+              <div class="md:flex md:items-center mb-4">
+                <div class="md:w-1/6">
+                  <InputLabel
+                    for="dt_venc"
+                    value="Dt. Venc."
+                    class="font-bold md:text-right pr-4"
+                  />
+                </div>
+
+                <div class="md:w-5/6">
+                  <FormInput
+                    type="date"
+                    v-model="form.dt_venc"
+                    class="w-4/12"
+                  />
+                  <InputError :message="form.errors.dt_venc" />
+                </div>
+              </div>
+
+              <!-- Campo Data Pgto. -->
+              <div class="md:flex md:items-center mb-4">
+                <div class="md:w-1/6">
+                  <InputLabel
+                    for="dt_pgto"
+                    value="Dt. Pgto."
+                    class="font-bold md:text-right pr-4"
+                  />
+                </div>
+
+                <div class="md:w-5/6">
+                  <FormInput
+                    type="date"
+                    v-model="form.dt_pgto"
+                    class="w-4/12"
+                  />
+                  <InputError :message="form.errors.dt_pgto" />
+                </div>
+              </div>
+
+              <!-- Campo Valor Pgto. -->
+              <div class="md:flex md:items-center mb-4">
+                <div class="md:w-1/6">
+                  <InputLabel
+                    for="valor_pgto"
+                    value="Valor Pgto."
+                    class="font-bold md:text-right pr-4"
+                  />
+                </div>
+
+                <div class="md:w-5/6">
+                  <FormInput
+                    type="number"
+                    min="0"
+                    step=".01"
+                    v-model="form.valor_pgto"
+                    class="w-4/12"
+                  />
+                  <InputError :message="form.errors.valor_pgto" />
+                </div>
+              </div>
+
+              <!-- Campo Operadora -->
+              <div class="md:flex md:items-center mb-4">
+                <div class="md:w-1/6">
+                  <InputLabel
+                    for="fat_operadora_id"
+                    value="Operadora"
+                    class="font-bold md:text-right pr-4"
+                  />
+                </div>
+
+                <div class="md:w-5/6">
+                  <Listbox
+                    v-model="form.fat_operadora_id"
+                    :options="operadoras"
+                    class="w-3/12"
+                  />
+                  <InputError :message="form.errors.fat_operadora_id" />
+                </div>
+              </div>
+
+              <!-- Campo Notas -->
+              <div class="md:flex md:items-center mb-4">
+                <div class="md:w-1/6">
+                  <InputLabel
+                    for="notas"
+                    value="Anotações"
+                    class="font-bold md:text-right pr-4"
+                  />
+                </div>
+
+                <div class="md:w-5/6">
+                  <FormInput v-model="form.notas" type="" class="w-full" />
+                  <InputError :message="form.errors.notas" />
+                </div>
+              </div>
+            </div>
+            <!-- Botão Add item -->
+            <div class="md:flex flex mb-4 flex-row-reverse">
+              <div class="md:w-5/6 flex justify-between items-center">
+                <div class="font-semibold">TOTAL DIGITADO: R$ 2.789,25</div>
+                <!-- Botão -->
+                <FormButtonNew
+                  :iconLeft="PlusIcon"
+                  @click.prevent="addItem"
+                  intent="other"
+                  >Add Itens</FormButtonNew
+                >
+              </div>
+            </div>
+
+            <!-- LINHA ITENS -->
+            <div
+              class="mb-4"
+              v-for="(fat_item, index) in form.fat_itens"
+              :key="index"
+            >
+              <div class="md:flex md:items-center mb-1 space-x-2">
+                <!-- Data -->
+                <div class="md:w-2/12 items-center">
+                  <InputLabel
+                    for="notas"
+                    value="Dt. Compra:"
+                    class="pl-1 text-sm"
+                  />
+                  <FormInput
+                    v-model="fat_item.dt_compra"
+                    type=""
+                    class="w-full"
+                  />
+                  <!-- <InputError :message="fatitem.errors.dt_compra" /> -->
+                </div>
+                <!-- Histórico -->
+                <div class="md:w-4/12 items-center">
+                  <InputLabel
+                    for="notas"
+                    value="Histórico:"
+                    class="pl-1 text-sm"
+                  />
+                  <FormInput v-model="fat_item.historico" class="w-full" />
+                  <!-- <InputError :message="fatitem.errors.historico" /> -->
+                </div>
+                <!-- Parcela -->
+                <div class="md:w-1/12 items-center">
+                  <InputLabel for="notas" value="Parc.:" class="pl-1 text-sm" />
+                  <FormInput
+                    v-model="fat_item.parcelas"
+                    type=""
+                    class="w-full"
+                  />
+                  <!-- <InputError :message="fatitem.errors.parcelas" /> -->
+                </div>
+                <!-- Valor -->
+                <div class="md:w-2/12 items-center">
+                  <InputLabel for="notas" value="Valor" class="pl-1 text-sm" />
+                  <FormInput
+                    v-model="fat_item.valor_compra"
+                    type=""
+                    class="w-full"
+                  />
+                  <!-- <InputError :message="fatitem.errors.valor_compra" /> -->
+                </div>
+                <!-- Grupo -->
+                <div class="md:w-2/12 items-center">
+                  <InputLabel for="notas" value="Grupo" class="pl-1 text-sm" />
+                  <Listbox
+                    v-model="fat_item.fat_grupo_id"
+                    :options="grupos"
+                    class="w-full"
+                  />
+                  <!-- <InputError :message="fatitem.errors.fat_grupo_id" /> -->
+                </div>
+                <!-- Botão Deletar-->
+                <div class="items-center">
+                  <InputLabel
+                    for="notas"
+                    value="BT"
+                    class="pl-1 text-sm invisible"
+                  />
+                  <FormButtonNew
+                    @click.prevent="deleteItem(index)"
+                    :btAction="TrashIcon"
+                    intent="danger"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- BOTÕES -->
+            <div class="md:flex flex flex-row-reverse">
+              <div class="md:w-5/6">
+                <!-- Botão Salvar -->
+                <PrimaryButton>Salvar</PrimaryButton>
+                <!-- Botão cancelar -->
+                <SecondaryButton
+                  type="button"
+                  @click.prevent="cancelSave"
+                  class="ml-2"
+                  >Cancelar</SecondaryButton
+                >
+              </div>
+            </div>
+          </form>
+          <!-- #### END #### -->
+          <!-- Conteúdo da Página -->
+        </div>
+      </template>
+    </SectionPageForm>
+  </AppLayout>
+</template>

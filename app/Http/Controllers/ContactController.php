@@ -14,9 +14,15 @@ class ContactController extends Controller
      */
     public function index()
     {
+        $tabelaList = Contact::orderBy('id', 'desc')
+                      ->paginate(4);
+        $registros = Contact::all();
         
+        //dd($tabelaList);
+
+
         return Inertia::render('Contact/Index',[
-            'contacts' => Contact::all(),
+            'contacts' => $registros,
             /* 'contacts' => Contact::paginate(4), */
         ]);
     }
