@@ -79,19 +79,8 @@ const logout = () => {
                 </NavLink>
 
                 <!-- Menu Link FATURAS -->
-                <NavLink
-                  :href="route('fat')"
-                  :active="route().current('fat')"
-                >
+                <NavLink :href="route('fat')" :active="route().current('fat')">
                   Faturas
-                </NavLink>
-
-                <!-- Menu Link Contatos -->
-                <NavLink
-                  :href="route('contacts.index')"
-                  :active="route().current('contacts.index')"
-                >
-                  Contatos
                 </NavLink>
 
                 
@@ -110,8 +99,9 @@ const logout = () => {
                 </form> -->
               </div>
 
+              <!-- ## MENÚ OPÇÕES -->
               <div class="ml-3 relative flex items-center">
-                <!-- OPÇÕES Dropdown -->
+                <!-- Dropdown OPÇÕES -->
                 <Dropdown align="right" width="60">
                   <template #trigger>
                     <span class="inline-flex rounded-md">
@@ -141,25 +131,91 @@ const logout = () => {
 
                   <template #content>
                     <div class="w-60">
-                      <!-- Faturas Settings -->
+                      <!-- LABEL Faturas -->
                       <div class="block px-4 py-2 text-xs text-gray-400">
                         Faturas
                       </div>
+                      <!-- LINK Fatura/Grupos  -->
                       <DropdownLink :href="route('fat.grupos')">
                         Grupo de faturas
                       </DropdownLink>
+                      <!-- LINK Fatura/Operadoras  -->
                       <DropdownLink :href="route('fat.opers')">
                         Operadoras de cartões
                       </DropdownLink>
 
+                      <!-- Separador -->
                       <div class="border-t border-gray-200" />
 
-                      <!-- Lançamentos Settings -->
+                      <!-- LABEL Lançamentos -->
                       <div class="block px-4 py-2 text-xs text-gray-400">
                         Lançamentos
                       </div>
+                      <!-- LINK Lançamento/Grupos  -->
                       <DropdownLink :href="route('lcto.grupos')">
                         Grupo de lançamentos
+                      </DropdownLink>
+                    </div>
+                  </template>
+                </Dropdown>
+              </div>              
+
+              <!-- ## MENÚ USUÁRIOS -->
+              <div class="ml-3 relative flex items-center" v-if="$page.props.auth.user.roles.includes('Admin')">
+              <!-- <div class="ml-3 relative flex items-center" > -->
+                <!-- Dropdown USUÁRIOS -->
+                <Dropdown align="right" width="60">
+                  <template #trigger>
+                    <span class="inline-flex rounded-md">
+                      <button
+                        type="button"
+                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150"
+                      >
+                        Usuários
+
+                        <svg
+                          class="ml-2 -mr-0.5 h-4 w-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                          />
+                        </svg>
+                      </button>
+                    </span>
+                  </template>
+
+                  <template #content>
+                    <div class="w-60">
+                      <!-- LABEL Funções e Permissões -->
+                      <div class="block px-4 py-2 text-xs text-gray-400">
+                        Funções e Permissões
+                      </div>
+                      <!-- LINK Funções  -->
+                      <DropdownLink :href="route('admin.roles')">
+                        Funções
+                      </DropdownLink>
+                      <!-- LINK Permissões  -->
+                      <DropdownLink :href="route('admin.permissions')">
+                        Permissões
+                      </DropdownLink>
+
+                      <!-- Separador -->
+                      <div class="border-t border-gray-200" />
+
+                      <!-- LABEL Usuários -->
+                      <div class="block px-4 py-2 text-xs text-gray-400">
+                        Usuários
+                      </div>
+                      <!-- LINK Usuários  -->
+                      <DropdownLink :href="route('admin.users')">
+                        Usuários
                       </DropdownLink>
                     </div>
                   </template>

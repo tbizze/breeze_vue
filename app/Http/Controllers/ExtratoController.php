@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Extrato;
 use App\Http\Requests\StoreExtratoRequest;
 use App\Http\Requests\UpdateExtratoRequest;
+use Inertia\Inertia;
 
 class ExtratoController extends Controller
 {
@@ -13,7 +14,20 @@ class ExtratoController extends Controller
      */
     public function index()
     {
-        //
+        // Estabelece relacionamentos.
+        $extratos = Extrato::with(''); //->sortBy('name');
+
+        
+        // Define o título da página.
+        $titulo = 'Extratos';
+
+        // Renderiza a View Inertia.
+        return Inertia::render('Extrato/Index',[
+            'titulo' => $titulo,
+            'extratos' => $extratos,
+            /* 'filters' => $request,
+            'total' => $total, */
+        ]);
     }
 
     /**

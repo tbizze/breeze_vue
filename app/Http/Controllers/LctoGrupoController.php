@@ -9,6 +9,14 @@ use Inertia\Inertia;
 
 class LctoGrupoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:lcto.grupos')->only('index');
+        $this->middleware('can:lcto.grupos.create')->only('create','store');
+        $this->middleware('can:lcto.grupos.edit')->only('edit','update');
+        $this->middleware('can:lcto.grupos.delete')->only('destroy');
+    }
+    
     /**
      * Display a listing of the resource.
      */

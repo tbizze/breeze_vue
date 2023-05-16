@@ -24,7 +24,7 @@ class TeamFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->company(),
-            'user_id' => User::factory(),
+            'user_id' => User::factory(), // irá usar o ID do novo usuário criado a partir da classe UserFactory.
             'personal_team' => true,
         ];
     }

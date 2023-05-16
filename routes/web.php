@@ -1,11 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ExtratoController;
 use App\Http\Controllers\FatGrupoController;
 use App\Http\Controllers\FatOperadoraController;
 use App\Http\Controllers\FaturaController;
 use App\Http\Controllers\LancamentoController;
 use App\Http\Controllers\LctoGrupoController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -74,6 +79,50 @@ Route::middleware([
 
     Route::get('/contacts/{contact}/delete', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
+    /**
+     * #### ROTAS DE USUÁRIOS #########################
+     */
+    Route::prefix('admin/users')->group(function (){
+        Route::get('/', [UserController::class,'index'])->name('admin.users');
+        // Criar
+        Route::get('/create', [UserController::class,'create'])->name('admin.users.create');
+        Route::post('/', [UserController::class,'store'])->name('admin.users.store');
+        // Editar
+        Route::get('/{user}/edit', [UserController::class,'edit'])->name('admin.users.edit');
+        Route::put('/{user}', [UserController::class,'update'])->name('admin.users.update');
+        // Deletar
+        Route::delete('/{user}', [UserController::class,'destroy'])->name('admin.users.delete');
+    });
+
+    /**
+     * #### ROTAS DE FUNÇÕES #########################
+     */
+    Route::prefix('admin/roles')->group(function (){
+        Route::get('/', [RoleController::class,'index'])->name('admin.roles');
+        // Criar
+        Route::get('/create', [RoleController::class,'create'])->name('admin.roles.create');
+        Route::post('/', [RoleController::class,'store'])->name('admin.roles.store');
+        // Editar
+        Route::get('/{role}/edit', [RoleController::class,'edit'])->name('admin.roles.edit');
+        Route::put('/{role}', [RoleController::class,'update'])->name('admin.roles.update');
+        // Deletar
+        Route::delete('/{role}', [RoleController::class,'destroy'])->name('admin.roles.delete');
+    });
+
+    /**
+     * #### ROTAS DE PERMISSÕES #########################
+     */
+    Route::prefix('admin/permissions')->group(function (){
+        Route::get('/', [PermissionController::class,'index'])->name('admin.permissions');
+        // Criar
+        Route::get('/create', [PermissionController::class,'create'])->name('admin.permissions.create');
+        Route::post('/', [PermissionController::class,'store'])->name('admin.permissions.store');
+        // Editar
+        Route::get('/{permission}/edit', [PermissionController::class,'edit'])->name('admin.permissions.edit');
+        Route::put('/{permission}', [PermissionController::class,'update'])->name('admin.permissions.update');
+        // Deletar
+        Route::delete('/{permission}', [PermissionController::class,'destroy'])->name('admin.permissions.delete');
+    });
 
     /**
      * #### ROTAS DE GRUPOS DE LANÇAMENTOS #########################
@@ -153,6 +202,21 @@ Route::middleware([
         Route::put('/{fatura}', [FaturaController::class,'update'])->name('fat.update');
         // Deletar
         Route::delete('/{fatura}/delete', [FaturaController::class,'destroy'])->name('fat.delete');
+    });
+
+    /**
+     * #### ROTAS DE EXTRATO #########################
+     */
+    Route::prefix('extrato')->group(function (){
+        Route::get('/', [ExtratoController::class,'index'])->name('extrato');
+        // Criar
+        Route::get('/create', [ExtratoController::class,'create'])->name('extrato.create');
+        Route::post('/', [ExtratoController::class,'store'])->name('extrato.store');
+        // Editar
+        Route::get('/{fatura}/edit', [ExtratoController::class,'edit'])->name('extrato.edit');
+        Route::put('/{fatura}', [ExtratoController::class,'update'])->name('extrato.update');
+        // Deletar
+        Route::delete('/{fatura}/delete', [ExtratoController::class,'destroy'])->name('extrato.delete');
     });
 
 });

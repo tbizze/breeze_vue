@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link, router, useForm } from "@inertiajs/vue3";
+import { computed, onMounted } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 import FormInput from "@/Components/FormInput.vue";
@@ -39,6 +40,24 @@ function submit() {
 function cancelSave() {
   router.get(route("fat"));
 }
+
+/* onMounted(() => {
+  //document.addEventListener('keydown', closeOnEscape)
+  var newData = props.fatura.dt_venc.split("/");
+  //console.log(newData);
+  //return newData[2] + "-" + newData[1] + "-" + newData[0];
+  props.fatura.dt_venc === newData[2] + "-" + newData[1] + "-" + newData[0];
+}); */
+
+/* const formatDtVenc = computed(() => {
+  var newData = props.fatura.dt_venc.split("/");
+  return newData[2] + "-" + newData[1] + "-" + newData[0];
+});
+const formatDtPgto = computed(() => {
+  var newData = props.fatura.dt_pgto.split("/");
+  return newData[2] + "-" + newData[1] + "-" + newData[0];
+}); */
+
 </script>
 
 <template>
@@ -100,7 +119,13 @@ function cancelSave() {
               </div>
 
               <div class="md:w-5/6">
-                <FormInput type="number" min="0" step=".01" v-model="form.valor_pgto" class="w-4/12" />
+                <FormInput
+                  type="number"
+                  min="0"
+                  step=".01"
+                  v-model="form.valor_pgto"
+                  class="w-4/12"
+                />
                 <InputError :message="form.errors.valor_pgto" />
               </div>
             </div>

@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
 
         // Roda um conjunto de Seeder.
         $this->call([
+            RoleSeeder::class,
+
             UserSeeder::class,      // Roda seeder User
 
             FatGrupoSeeder::class,
@@ -27,7 +29,9 @@ class DatabaseSeeder extends Seeder
             LctoGrupoSeeder::class,
             FaturaSeeder::class,
             FaturaItemSeeder::class,
-            LancamentoSeeder::class
+            LancamentoSeeder::class,
+
+            
 
         ]);
     }

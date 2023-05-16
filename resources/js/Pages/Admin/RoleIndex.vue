@@ -9,7 +9,7 @@ import { PlusIcon } from "@heroicons/vue/solid";
 import Pagination from "@/Components/Pagination.vue";
 
 const props = defineProps({
-  grupos: Object,
+  roles: Object,
   titulo: "",
   filters: Object,
 });
@@ -21,40 +21,43 @@ const form = useForm({
 });
 
 /**
+ * Função para submeter o formulário de pesquisa.
+ */
+function submit() {
+  router.get(route("admin.roles"), form);
+}
+
+/**
  * Função para editar um registro.
  * Como parâmetro recebe o ID.
  */
 function actionEdit(id) {
-  router.get(route("fat.grupos.edit", id));
+  router.get(route("admin.roles.edit", id));
 }
 /**
  * Função para deletar um registro.
  * Como parâmetro recebe o ID.
  */
 function actionDelete(id) {
-  router.delete(route("fat.grupos.delete", id));
+  router.delete(route("admin.roles.delete", id));
 }
 /**
  * Função para abrir formulário de cadastro.
  */
 function actionAdd() {
-  router.get(route("fat.grupos.create"));
+  router.get(route("admin.roles.create"));
 }
-/**
- * Função para submeter o formulário de pesquisa.
- */
- function submit() {
-  router.get(route("fat.grupos"), form);
-}
+
 /**
  * Função para realizar o OrderBy.
  */
- function sort(field) {
+function sort(field) {
   form.field = field;
   form.direction = form.direction === "asc" ? "desc" : "asc";
   submit();
 }
 </script>
+
 
 <template>
   <!-- Carrega o Layout da Aplicação com "Logo e TopMenu, com botões Login/Logout..." -->
@@ -79,7 +82,7 @@ function actionAdd() {
 
         <div class="w-full md:w-1/2">
           <form @submit.prevent="submit()" class="flex items-center">
-            <label for="simple-search" class="sr-only">Procurar</label>
+            <label for="search" class="sr-only">Procurar</label>
             <div class="relative w-full">
               <div
                 class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
@@ -117,14 +120,13 @@ function actionAdd() {
           >
             <tr>
               <td>#</td>
-              <td class="py-3 cursor-pointer" @click="sort('nome')">
+
+              <td class="py-3 cursor-pointer" @click="sort('name')">
                 <span class="inline-flex w-full justify-center items-center"
                   >Nome
                   <!-- Se ASC-->
                   <svg
-                    v-if="
-                      form.field === 'nome' && form.direction === 'asc'
-                    "
+                    v-if="form.field === 'name' && form.direction === 'asc'"
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-4 w-4 ml-1"
                     viewBox="0 0 20 20"
@@ -136,9 +138,7 @@ function actionAdd() {
                   </svg>
                   <!-- Se DESC-->
                   <svg
-                    v-if="
-                      form.field === 'dt_venc' && form.direction === 'desc'
-                    "
+                    v-if="form.field === 'name' && form.direction === 'desc'"
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-4 w-4 ml-1"
                     viewBox="0 0 20 20"
@@ -150,28 +150,44 @@ function actionAdd() {
                   </svg>
                 </span>
               </td>
+
               <td>Descrição</td>
-              <td>Ações</td>
+              <td>Ação</td>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="grupo in grupos.data"
-              :key="grupo.id"
+              v-for="role in roles.data"
+              :key="role.id"
               class="hover:bg-gray-100"
             >
-              <td class="border px-4 py-2 w-10">{{ grupo.id }}</td>
-              <td class="border px-4 py-2">{{ grupo.nome }}</td>
-              <td class="border px-4 py-2">{{ grupo.notas }}</td>
-              <td class="border px-4 py-2 space-x-2 text-center w-28">
+              <td class="border px-4 py-2 w-10">{{ role.id }}</td>
+              <td class="border px-4 py-2">{{ role.name }}</td>
+              <td class="border px-4 py-2">{{ role.description }}</td>
+
+              <!-- <td class="border px-4 py-2 space-x-2">
+                <span
+                  v-for="user in role.users"
+                  :key="user.id"
+                  class="bg-orange-200 px-1 py-0.5 text-sm rounded-lg"
+                  >{{ user.name }}
+                </span>
+              </td> -->
+              <td class="border px-4 py-2 space-x-2 text-center w-36">
+                <!-- <FormButtonNew
+                  @click.prevent="actionEdit(user.id)"
+                  :btAction="PencilIcon"
+                  intent="secondary"
+                  tpMin
+                /> -->
                 <FormButtonNew
-                  @click.prevent="actionEdit(grupo.id)"
+                  @click.prevent="actionEdit(role.id)"
                   :btAction="PencilIcon"
                   intent="secondary"
                   tpMin
                 />
                 <FormButtonNew
-                  @click.prevent="actionDelete(grupo.id)"
+                  @click.prevent="actionDelete(role.id)"
                   :btAction="TrashIcon"
                   intent="danger"
                   tpMin
@@ -181,7 +197,6 @@ function actionAdd() {
           </tbody>
         </table>
       </template>
-
       <!-- #### Footer da Tabela -->
       <template #footer>
         <!-- Totais -->
@@ -195,7 +210,7 @@ function actionAdd() {
           }} -->
         </div>
         <!-- Paginação -->
-        <Pagination :pagination="grupos" />
+        <Pagination :pagination="roles" />
       </template>
     </SectionPageTable>
     <!-- #### END: Conteúdo da Página #### -->

@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->integer('idade')->nullable();
-            $table->date('dt_nasc')->nullable();
+            $table->date('dt_nasc');
+            $table->string('celular', 11)->nullable();
+            $table->string('notas')->nullable();
             $table->timestamps();
+
+            $table->foreignId('user_id')->constrained();
         });
     }
 

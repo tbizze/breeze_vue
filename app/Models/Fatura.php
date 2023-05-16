@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Fatura extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+
+class Fatura extends Model implements Auditable
 {
     use HasFactory;
+    // Invoca  driver de auditoria.
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * Habilita o recurso de Apagar para Lixeira.
@@ -29,6 +33,7 @@ class Fatura extends Model
     */
     protected $casts = [
         'dt_venc' => 'date:d/m/Y',
+        //'dt_venc' => 'date:Y-m-d',
         'dt_pgto' => 'date:d/m/Y',
     ];
 

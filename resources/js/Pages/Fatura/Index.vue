@@ -89,7 +89,7 @@ function sort(field) {
           intent="other"
           >Adicionar
         </FormButtonNew>
-<!--         <FormButtonNew
+        <!--         <FormButtonNew
           @click.prevent="actionAddAll"
           :iconLeft="PlusIcon"
           intent="other"
@@ -141,9 +141,7 @@ function sort(field) {
                   >Dt. Venc.
                   <!-- Se ASC-->
                   <svg
-                    v-if="
-                      form.field === 'dt_venc' && form.direction === 'asc'
-                    "
+                    v-if="form.field === 'dt_venc' && form.direction === 'asc'"
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-4 w-4 ml-1"
                     viewBox="0 0 20 20"
@@ -155,9 +153,7 @@ function sort(field) {
                   </svg>
                   <!-- Se DESC-->
                   <svg
-                    v-if="
-                      form.field === 'dt_venc' && form.direction === 'desc'
-                    "
+                    v-if="form.field === 'dt_venc' && form.direction === 'desc'"
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-4 w-4 ml-1"
                     viewBox="0 0 20 20"
@@ -174,9 +170,7 @@ function sort(field) {
                   >Dt. Pgto.
                   <!-- Se ASC-->
                   <svg
-                    v-if="
-                      form.field === 'dt_pgto' && form.direction === 'asc'
-                    "
+                    v-if="form.field === 'dt_pgto' && form.direction === 'asc'"
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-4 w-4 ml-1"
                     viewBox="0 0 20 20"
@@ -188,9 +182,7 @@ function sort(field) {
                   </svg>
                   <!-- Se DESC-->
                   <svg
-                    v-if="
-                      form.field === 'dt_pgto' && form.direction === 'desc'
-                    "
+                    v-if="form.field === 'dt_pgto' && form.direction === 'desc'"
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-4 w-4 ml-1"
                     viewBox="0 0 20 20"
